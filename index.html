@@ -7,17 +7,25 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Book Recommendation Engine</h1>
-    <div id="app">
-        <div id="app">
+    <div class="container">
+        <h1>📚 Book Recommendation Engine</h1>
+        <br class="input-box">
             <h2>Enter a Book You Like</h2>
             <input type="text" id="book-input" placeholder="Enter a book title">
-            <button id="recommend-btn">Get Recommendations</button>
-            
-            <h2>Recommended Books</h2>
-            <ul id="recommendations"></ul>
+            <br></br>
+            <!-- New Sorting Dropdown -->
+            <label for="sort-options">Sort Recommendations By:</label>
+            <select id="sort-options">
+                <option value="rating">Higher Rating</option>
+                <option value="published">Most Recently Published</option>
+            </select>
+
+            <button id="recommend-btn">🔍 Get Recommendations</button>
         </div>
-    </div>
+        
+        <h2 id="recommendation-title" style="display: none;">Recommended Books</h2>
+        <ul id="recommendations" style="display: none;"></ul>
+
     <script src="script.js"></script>
 </body>
 </html>

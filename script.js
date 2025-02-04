@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function getRecommendations() {
     const bookInput = document.getElementById('book-input').value.trim();
+    const sortOption = document.getElementById('sort-options').value; // Get selected sorting method
+
     if (!bookInput) {
         alert('Please enter a book title.');
         return;
@@ -14,22 +16,28 @@ async function getRecommendations() {
         const response = await fetch('output.json');
         const books = await response.json();
 
-        // Find the genre of the input book
+        // Find the input book
         const inputBook = books.find(book => book.title.toLowerCase().includes(bookInput.toLowerCase()));
+
         if (!inputBook) {
             alert('Sorry, that book was not found in our database.');
             return;
         }
 
-        const inputGenre = inputBook.genre;
+        let recommendations = [];
 
-        // Filter books of the same genre (excluding the input book)
-        const recommendations = books.filter(book => {
-            return book.genre === inputGenre && book.title.toLowerCase() !== bookInput.toLowerCase();
-        });
+        // Determine sorting method
+        if (sortOption === "rating") {
+            recommendations = books
+                .filter(book => book.genre === inputBook.genre && book.title.toLowerCase() !== bookInput.toLowerCase())
+                .sort((a, b) => (b.average_rating || 0) - (a.average_rating || 0));
 
-        // Sort recommendations in descending order of rating
-        recommendations.sort((a, b) => (b.average_rating || 0) - (a.average_rating || 0));
+        } else if (sortOption === "published") {
+            recommendations = books
+                .filter(book => book.genre === inputBook.genre && book.title.toLowerCase() !== bookInput.toLowerCase())
+                .sort((a, b) => (b.published_year || 0) - (a.published_year || 0));
+
+        } 
 
         displayRecommendations(recommendations);
     } catch (error) {
@@ -40,20 +48,26 @@ async function getRecommendations() {
 
 function displayRecommendations(recommendations) {
     const recommendationsList = document.getElementById('recommendations');
+    const recommendationTitle = document.getElementById('recommendation-title');
+
     recommendationsList.innerHTML = '';
 
     if (recommendations.length === 0) {
         recommendationsList.innerHTML = '<li>No recommendations found.</li>';
-        return;
+    } else {
+        recommendations.forEach(book => {
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>${book.title}</strong> by ${book.author} <br>
+                            <em>Genre:</em> ${book.genre} <br>
+                            <em>Rating:</em> ${book.average_rating || 'Rating not available'} <br>
+                            <em>Published Year:</em> ${book.published_year || 'N/A'} <br>
+                            <em>Description:</em> ${book.description || 'Unavailable in our database'}`;
+            recommendationsList.appendChild(li);
+        });
     }
 
-    recommendations.forEach(book => {
-        const li = document.createElement('li');
-        li.innerHTML = `<strong>${book.title}</strong> by ${book.author} <br>
-                        <em>Genre:</em> ${book.genre} <br>
-                        <em>Rating:</em> ${book.average_rating || 'Rating not available'} <br>
-                        <em>Published Year:</em> ${book.published_year || 'N/A'} <br>
-                        <em>Description:</em> ${book.description || 'Unavailable in our database'}`;
-        recommendationsList.appendChild(li);
-    });
+    // Show the recommendations section after button click
+    recommendationTitle.style.display = 'block';
+    recommendationsList.style.display = 'block';
 }
+
