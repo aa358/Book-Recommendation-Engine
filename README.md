@@ -1,4 +1,4 @@
-📚 Book Recommendation Engine
+# 📚 Book Recommendation Engine
 Discover your next favorite book with this Book Recommendation Engine! 🚀 Simply enter a book title, and the app will suggest books of the same genre, sorted by rating ⭐ or publication year 📅.
 
 🔥 Features:
