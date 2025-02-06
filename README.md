@@ -10,4 +10,4 @@ Discover your next favorite book with this Book Recommendation Engine! 🚀 Simp
 JavaScript (ES6+): DOM manipulation, async/await for fetching data
 HTML & CSS: Responsive design with modern UI styling
 JSON Handling: Fetching and processing structured book data
-🚀 Live Demo:
+🚀 Live Demo: https://aa358.github.io/Book-Recommendation-Engine/
